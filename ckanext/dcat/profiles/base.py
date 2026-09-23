@@ -1365,6 +1365,9 @@ class RDFProfile(object):
         if not value:
             return
 
+        if isinstance(value, datetime.date):
+            value = value.isoformat()
+
         if is_year(value):
             self.g.add((subject, predicate, _type(value, datatype=XSD.gYear)))
         elif is_year_month(value):
