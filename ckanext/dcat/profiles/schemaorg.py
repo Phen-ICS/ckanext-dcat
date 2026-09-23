@@ -87,6 +87,9 @@ class SchemaOrgProfile(RDFProfile):
         """
         if not value:
             return
+
+        if isinstance(value, datetime.date):
+            value = value.isoformat()
         try:
             default_datetime = datetime.datetime(1, 1, 1, 0, 0, 0)
             _date = parse_date(value, default=default_datetime)
