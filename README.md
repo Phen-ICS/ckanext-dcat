@@ -8,6 +8,22 @@ Ckanext-dcat is a [CKAN](https://github.com/ckan/ckan) extension that helps data
 
 This extension is currently supported in CKAN 2.10 and CKAN 2.11.
 
+> [!NOTE]
+> **This is [Phen-ICS](https://github.com/Phen-ICS)'s fork of the official
+> `ckan/ckanext-dcat`**, carrying one small compatibility fix on top of
+> upstream: `_add_date_triple` (in `profiles/base.py`, used by the
+> `croissant` plugin, and in `profiles/schemaorg.py`) crashed with a
+> `TypeError` whenever it received a raw `datetime.date`/`datetime.datetime`
+> value instead of an ISO string - which is exactly what happens when the
+> `structured_data` or `croissant` plugin is enabled, since CKAN's own
+> `package/read_base.html` template calls `h.structured_data(pkg)` /
+> `h.croissant(pkg)` with the template context's `pkg` dict (raw `datetime`
+> fields for `metadata_created`/`metadata_modified`), not the ISO-string
+> dict that `package_show` returns. Both methods now normalize such values
+> to their ISO string form before parsing. Verified against a CKAN 2.12 /
+> SQLAlchemy 2.0 test stack. No behaviour change for the existing
+> string-input case.
+
 > [!IMPORTANT]
 > Read the documentation for a full user guide:
 > https://docs.ckan.org/projects/ckanext-dcat
